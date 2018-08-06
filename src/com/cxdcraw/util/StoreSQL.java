@@ -7,13 +7,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class StoreSQL {
-	//JDBC Çı¶¯Ãû¼°Êı¾İ¿âURL
+	//JDBC é©±åŠ¨ååŠæ•°æ®åº“URL
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	static final String DB_URL = "jdbc:mysql://localhost:3306/RUNOOB?useSSL=false";
 	
-	//Êı¾İ¿âµÄÓÃ»§ÃûÓëÃÜÂë
+	//æ•°æ®åº“çš„ç”¨æˆ·åä¸å¯†ç 
 	static final String USER = "root";
-	static final String PASS = "a13757407965b";
+	static final String PASS = "************";
 	
 	public static void StoreInSql(String baseurl ,String targeturl)
 	{
@@ -27,21 +27,21 @@ public class StoreSQL {
 
 		try
 		{
-			//×¢²áJDBCÇı¶¯
+			//æ³¨å†ŒJDBCé©±åŠ¨
 			Class.forName("com.mysql.jdbc.Driver");
 			
-			//´ò¿ªÁ´½Ó
-			//System.out.println("Á´½ÓÊı¾İ¿â...");
+			//æ‰“å¼€é“¾æ¥
+			//System.out.println("é“¾æ¥æ•°æ®åº“...");
 			conn = DriverManager.getConnection(DB_URL,USER,PASS);			
 			//Attempts to establish a connection to the given database URL. The DriverManager attempts to select an appropriate driver from the set of registered JDBC drivers. 
 
-			//Ö´ĞĞ²éÑ¯
-			//System.out.println("ÊµÀı»¯Statement¶Ô...");
+			//æ‰§è¡ŒæŸ¥è¯¢
+			//System.out.println("å®ä¾‹åŒ–Statementå¯¹...");
 			stmt = conn.createStatement();
 			
-			String sql;//ÓÃÓÚ´«µİsqlÓï¾ä
+			String sql;//ç”¨äºä¼ é€’sqlè¯­å¥
 			
-			//´´½¨¶ÔÓ¦±í¸ñ
+			//åˆ›å»ºå¯¹åº”è¡¨æ ¼
 			try
 			{
 				sql = "CREATE TABLE `crawlinks`.`"+baseurl+"` ( `id` INT NOT NULL AUTO_INCREMENT,`url` VARCHAR(255) NULL,`ifdownloaded` TINYINT NULL,PRIMARY KEY (`id`));";
@@ -52,10 +52,10 @@ public class StoreSQL {
 				//System.out.println("database already exited");
 			}
 						
-			System.out.println("²åÈëÊı¾İ...");
+			System.out.println("æ’å…¥æ•°æ®...");
 			sql = "INSERT INTO `crawlinks`.`"+baseurl+"` ( `url`, `ifdownloaded`) VALUES ('"+ targeturl +"', '0')";	
 			
-			System.out.println("ÕıÔÚ²åÈëurlµ½Êı¾İ¿â£º " + baseurl + "  Á´½ÓÎª£º " + targeturl);
+			System.out.println("æ­£åœ¨æ’å…¥urlåˆ°æ•°æ®åº“ï¼š " + baseurl + "  é“¾æ¥ä¸ºï¼š " + targeturl);
 			stmt.executeUpdate(sql);
 			
 			stmt.close();
@@ -63,24 +63,24 @@ public class StoreSQL {
 		}
 		catch(SQLException se)
 		{
-		    // ´¦Àí JDBC ´íÎó
+		    // å¤„ç† JDBC é”™è¯¯
             se.printStackTrace();
 		}
 		catch(Exception e)
 		{
-            // ´¦Àí Class.forName ´íÎó
+            // å¤„ç† Class.forName é”™è¯¯
             e.printStackTrace();
         }
 		finally
 		{
-            // ¹Ø±Õ×ÊÔ´
+            // å…³é—­èµ„æº
             try
             {
                 if(stmt!=null) stmt.close();
             }
             catch(SQLException se2)
             {
-            }// Ê²Ã´¶¼²»×ö
+            }// ä»€ä¹ˆéƒ½ä¸åš
             try
             {
                 if(conn!=null) conn.close();
@@ -90,6 +90,6 @@ public class StoreSQL {
                 se.printStackTrace();
             }
         }
-		System.out.println("²åÈë³É¹¦£¡");
+		System.out.println("æ’å…¥æˆåŠŸï¼");
 	}
 }
