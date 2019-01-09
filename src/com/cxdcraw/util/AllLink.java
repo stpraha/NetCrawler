@@ -10,52 +10,46 @@ import java.util.regex.*;
 
 public class AllLink
 {	
-	static int N = 1;		//ĞŞ¸ÄÕâ¸öÒÔ¸ü¸Ä»ñÈ¡¹ã¶È
-	static int ThreadCount = 4;	// ÏÂÔØµÄÏß³ÌÊı
+	static int N = 1;		//ä¿®æ”¹è¿™ä¸ªä»¥æ›´æ”¹è·å–å¹¿åº¦
+	static int ThreadCount = 4;	// ä¸‹è½½çš„çº¿ç¨‹æ•°
 	
 	/**
-	 * ÕâÀïÒª¼ÌĞø¸Ä½ø£¬°ÑMAP£¬¼ÓÏß³Ì
+	 * è¿™é‡Œè¦ç»§ç»­æ”¹è¿›ï¼ŒæŠŠMAPï¼ŒåŠ çº¿ç¨‹
 	 * @param args
 	 */
 	static int num = 0;
 	public static void main(String[] args)
 	{	
-		//¶¨Òå¼´½«·ÃÎÊµÄÁ¬½Ó
-		//String url = "http://pppp25.com";
-		//String url = "http://www.46fk.com";
-		//String url = "http://www.meiyuanguan.com";	
-		String url = "http://sstushu.com";
-		//String url = "http://www.ttse8.com";
-		//String url = "http://www.hust.edu.cn";	
-		//String url = "http://www.zifangsky.cn";	
+		//å®šä¹‰å³å°†è®¿é—®çš„è¿æ¥
+		String url = "http://ss.com";	
 		
-		//¶¨ÒåMap
+		//å®šä¹‰Map
 		HashMap<String,Boolean> oldMap = new HashMap<String,Boolean>();
 		
-		//System.out.println("¿ªÊ¼»ñÈ¡Á´½Ó...");
+		//System.out.println("å¼€å§‹è·å–é“¾æ¥...");
 						
 		oldMap.put(url, false);
-		//½«³õÊ¼Á¬½Ó´«µİ¸ø·½·¨£¬·µ»ØÒ»¸ö´¢´æÁËËùÓĞÁ´½ÓµÄMap
+		//å°†åˆå§‹è¿æ¥ä¼ é€’ç»™æ–¹æ³•ï¼Œè¿”å›ä¸€ä¸ªå‚¨å­˜äº†æ‰€æœ‰é“¾æ¥çš„Map
 		oldMap = crawLinks(url,oldMap);
 		
-		//±éÀústoreMapÖĞµÄÔªËØµÄÁ´½Ó²¢´òÓ¡
+		//éå†storeMapä¸­çš„å…ƒç´ çš„é“¾æ¥å¹¶æ‰“å°
 		Iterator iter = oldMap.entrySet().iterator();
 		
-		System.out.println("¿ªÊ¼½«»ñÈ¡µ½µÄÁ´½Ó²åÈëÊı¾İ¿â...");
+		System.out.println("å¼€å§‹å°†è·å–åˆ°çš„é“¾æ¥æ’å…¥æ•°æ®åº“...");
 		while(iter.hasNext())
 		{
 			Map.Entry entry = (Map.Entry) iter.next();
 			System.out.println(entry.getKey());
 			System.out.println(entry.getValue());
-			//DownloadPic.DWL(entry.getKey().toString());	//´«µİ¸øDWLµÄÖµÓ¦ÎªÒ³ÃæÁ´½Ó
+			//DownloadPic.DWL(entry.getKey().toString());	//ä¼ é€’ç»™DWLçš„å€¼åº”ä¸ºé¡µé¢é“¾æ¥
 			
 			StoreSQL.StoreInSql(url, entry.getKey().toString());
 		}				
 		
-		System.out.println("¿ªÊ¼ÏÂÔØÍ¼Æ¬...");
-		DownloadPic.DWL(url,ThreadCount);	//(Êı¾İ¿â±íµÄµØÖ·,ÏÂÔØÏß³ÌÊı)  Êı¾İ¿âµÄ±íÉèÖÃµÄÃû×ÖÎªurl
+		System.out.println("å¼€å§‹ä¸‹è½½å›¾ç‰‡...");
+		DownloadPic.DWL(url,ThreadCount);	//(æ•°æ®åº“è¡¨çš„åœ°å€,ä¸‹è½½çº¿ç¨‹æ•°)  æ•°æ®åº“çš„è¡¨è®¾ç½®çš„åå­—ä¸ºurl
 		
-		//É¾³ıÏÂÔØÎÄ¼ş¼ĞÀï´óĞ¡ÏàÍ¬µÄÎÄ¼ş---ÊÓ×÷ÏàÍ¬ÎÄ¼ş
+		//åˆ é™¤ä¸‹è½½æ–‡ä»¶å¤¹é‡Œå¤§å°ç›¸åŒçš„æ–‡ä»¶---è§†ä½œç›¸åŒæ–‡ä»¶
 		try
 		{
 			DupRemove.Delet("F:\\picdownload2\\");
@@ -69,31 +63,31 @@ public class AllLink
 
 	public static HashMap<String,Boolean> crawLinks(String baseLink,HashMap<String,Boolean> oldMap)
 	{
-		//ÓÃÓÚ´¢´æ¼´½«±éÀúµÄÁ´½Ó
+		//ç”¨äºå‚¨å­˜å³å°†éå†çš„é“¾æ¥
 		String rawLink = "";
 		
-		//¶¨ÒånewMap
+		//å®šä¹‰newMap
 		HashMap<String,Boolean> newMap = new HashMap<String,Boolean>();
 		
-		//½«³õÊ¼Á¬½Ó·ÅÔÚnewdMapÖĞ
+		//å°†åˆå§‹è¿æ¥æ”¾åœ¨newdMapä¸­
 		newMap.put(baseLink, false);
 		
 		for(Map.Entry<String,Boolean> Link : oldMap.entrySet())
 		{
-			//²âÊÔÓÃ
+			//æµ‹è¯•ç”¨
 			if(num == N)
 			{
 				return oldMap;
 			}
-			// Èç¹ûÃ»±»±éÀú¹ı Ôò±éÀúÒ»ÏÂ
+			// å¦‚æœæ²¡è¢«éå†è¿‡ åˆ™éå†ä¸€ä¸‹
 			if(Link.getValue() == false)
 			{
 				rawLink = Link.getKey();
 				//newMap.put("test1111"+ nums, true);
-				//·¢ÆğGetÇëÇó
+				//å‘èµ·Getè¯·æ±‚
 				try
 				{
-					//½«rawLink×ª³Éurl¶ÔÏó
+					//å°†rawLinkè½¬æˆurlå¯¹è±¡
 					URL realURL = new URL(rawLink);
 					
 					HttpURLConnection connection = (HttpURLConnection)realURL.openConnection();
@@ -116,7 +110,7 @@ public class AllLink
 						
 						String line = "";
 						Pattern pattern1 = Pattern.compile("<a.*?href=[\"']?((https?://)?/?[^\"']+)[\"']?.*?>(.+)</a>");
-						//ÒÔÉÏÕâÌõ£¬<a.*?href= Æ¥Åä<a href=   [\"']?Æ¥Åäµ¥¸ö"»ò'   ((https?://)?/?[^\"']+)Æ¥Åähttps:»òhttp:»òÃ»ÓĞ   £¿£¿£¿£¿
+						//ä»¥ä¸Šè¿™æ¡ï¼Œ<a.*?href= åŒ¹é…<a href=   [\"']?åŒ¹é…å•ä¸ª"æˆ–'   ((https?://)?/?[^\"']+)åŒ¹é…https:æˆ–http:æˆ–æ²¡æœ‰   ï¼Ÿï¼Ÿï¼Ÿï¼Ÿ
 						Matcher matcher1 = null;
 						while((line = reader.readLine()) != null )
 						{
@@ -125,9 +119,9 @@ public class AllLink
 							
 							if(matcher1.find())
 							{
-								String newLink = matcher1.group(1).trim();	//·µ»Ø¼ì²âµ½µÄÁ´½Ó²¢È¥µôÍ·Î²¿Õ¸ñ
+								String newLink = matcher1.group(1).trim();	//è¿”å›æ£€æµ‹åˆ°çš„é“¾æ¥å¹¶å»æ‰å¤´å°¾ç©ºæ ¼
 
-								//ÅĞ¶ÏÁ´½ÓÊÇ·ñÒÔhttp¿ªÍ·
+								//åˆ¤æ–­é“¾æ¥æ˜¯å¦ä»¥httpå¼€å¤´
 								if(!(newLink.startsWith("http")))
 								{
 									if(newLink.startsWith("/"))
@@ -140,20 +134,20 @@ public class AllLink
 									}
 								}
 								
-								//È¥µôÄ©Î²µÄ/
+								//å»æ‰æœ«å°¾çš„/
 								if(newLink.endsWith("/"))
 								{
 									newLink = newLink.substring(0, newLink.length()-1);
 								}
 								
-								//È¥µôÄ©Î²µÄ>¼°Ö®ºóµÄ
+								//å»æ‰æœ«å°¾çš„>åŠä¹‹åçš„
 								if(newLink.indexOf('>') != -1)
 								{
 									int loc = newLink.indexOf('>');
 									newLink = newLink.substring(0, loc);
 								}
 								
-								//È¥µôÄ©Î²µÄ" "¼°Ö®ºóµÄ
+								//å»æ‰æœ«å°¾çš„" "åŠä¹‹åçš„
 								if(newLink.indexOf(' ') != -1)
 								{
 									int loc = newLink.indexOf(' ');
@@ -161,7 +155,7 @@ public class AllLink
 								}
 								
 								
-								//È¥ÖØ£¬È¥ÍâÁ´
+								//å»é‡ï¼Œå»å¤–é“¾
 								if( (!oldMap.containsKey(newLink)) && (!newMap.containsKey(newLink)) && (newLink.startsWith(baseLink)) && (!(newLink.endsWith("jpg"))))
 								{
 									System.out.println(newLink);
@@ -184,11 +178,11 @@ public class AllLink
 			}
 		}	
 		
-		//ÓĞĞÂÁ´½Ó£¬¼ÌĞø±éÀú
+		//æœ‰æ–°é“¾æ¥ï¼Œç»§ç»­éå†
 		if (!newMap.isEmpty())
 		{
 			oldMap.putAll(newMap);
-			oldMap.putAll(crawLinks(baseLink,oldMap)); //ÓÉÓÚMapµÄÌØĞÔ£¬²»»áµ¼ÖÂ³öÏÖÖØ¸´µÄ¼üÖµ¶Ô
+			oldMap.putAll(crawLinks(baseLink,oldMap)); //ç”±äºMapçš„ç‰¹æ€§ï¼Œä¸ä¼šå¯¼è‡´å‡ºç°é‡å¤çš„é”®å€¼å¯¹
 		}
 		return oldMap;
 	}
