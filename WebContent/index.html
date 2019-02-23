@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+</script>
+<script>
+function sendUrl(){
+	
+	$.ajax({
+		type:"post",
+		url:"servletCrawler",
+		dataType:"text",
+		data:
+		{
+			"web2crawl":$("#url2crawl").val(),
+			"startCrawl":"1"
+		},
+		success:function(callBack)
+		{
+			$("p").append("Start crawling: ");
+			$("p").append(callBack);
+		},
+	    error:function(xhr, status, errMsg)
+	    {
+	    	alert("数据传输失败!");
+	    }
+	});
+}
+
+</script>
+</head>
+<body>
+	The websit needed to be crawled:
+	<br/>
+	<input id="url2crawl" type="text" name="web2crawl" value="">
+	<button type="button" onclick="sendUrl()">Confirm</button>
+	<p></p>
+</body>
+</html>
